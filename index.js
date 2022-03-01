@@ -1,7 +1,10 @@
 const searchBtn = document.getElementById("search-btn");
+const detailseDiv = document.getElementById("phone-detailse");
 // searchBtn
 searchBtn.addEventListener("click", () => {
   const inputFiled = document.getElementById("input-field");
+  // clear detailseDiv
+  detailseDiv.textContent = "";
   const inputFiledValue = inputFiled.value;
   inputFiled.value = "";
   const empty = document.querySelector(".empty");
@@ -18,10 +21,11 @@ searchBtn.addEventListener("click", () => {
 // SearchResult
 const displaySearchResult = (phones) => {
   const searchResult = document.getElementById("search-result");
+  // clear SearchResult
   searchResult.textContent = "";
   const noResult = document.querySelector(".no-result");
   const phonesData = phones.data;
-
+  // Error handle
   if (phonesData.length === 0) {
     noResult.style.display = "block";
   } else {
@@ -29,8 +33,6 @@ const displaySearchResult = (phones) => {
     searchResult.textContent = "";
     const phonesSlice = phonesData.slice(2, 22);
     phonesSlice.forEach((phone) => {
-      // console.log(phone.slug);
-      // console.log(phone);
       const div = document.createElement("div");
       div.classList.add("col");
       div.innerHTML = `
@@ -45,13 +47,9 @@ const displaySearchResult = (phones) => {
       searchResult.appendChild(div);
     });
   }
-
-  // console.log(phonesData);
 };
 const loadPhoneDetails = (phoneID) => {
-  // console.log(slug);
   const url = `https://openapi.programming-hero.com/api/phone/${phoneID}`;
-  //  console.log(url);
   fetch(url)
     .then((res) => res.json())
     .then((data) => displayPhoneDetails(data));
@@ -59,11 +57,6 @@ const loadPhoneDetails = (phoneID) => {
 // phoneDetails
 const displayPhoneDetails = (phoneDetails) => {
   const phone = phoneDetails.data;
-  phone.innerHTML = "";
-
-  // const sensors = phone.mainFeatures.sensors;
-  // console.log(sensors);
-  const detailseDiv = document.getElementById("phone-detailse");
   detailseDiv.innerHTML = `
     <div class=''> 
     <img class='phone-img mx-auto' src='${phone.image}'/>
@@ -84,14 +77,4 @@ const displayPhoneDetails = (phoneDetails) => {
     <p> <span class='fw-bold me-4'> USB : </span> ${phone.others.USB} </p>  
     </div>
   `;
-  // console.log(phone.others);
-  // <p>${phone.mainFeatures.}</p>
-
-  // loop
-  // const sensorDisplay = () => {
-  //   sensors.forEach((index) => {
-  //     const sensorsP = document.getElementById("sensors");
-  //     sensorsP.innerHTML = index;
-  //   });
-  // };
 };
