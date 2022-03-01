@@ -12,7 +12,14 @@ searchBtn.addEventListener("click", () => {
 // SearchResult
 const displaySearchResult = (phones) => {
   const searchResult = document.getElementById("search-result");
+  searchResult.textContent = "";
+  const noResult = document.querySelector(".no-result");
   const phonesData = phones.data;
+  if (phonesData.length === 0) {
+    noResult.innerHTML = `<p>no result</p>`;
+  }
+  noResult.textContent = "";
+  searchResult.textContent = "";
   const phonesSlice = phonesData.slice(0, 20);
   phonesSlice.forEach((phone) => {
     // console.log(phone.slug);
@@ -24,8 +31,7 @@ const displaySearchResult = (phones) => {
           <img src="${phone.image}" class="card-img-top" alt="..." />
           <div class="card-body">
             <h5 class="card-title text-center">${phone.brand} ${phone.phone_name}</h5>
-            
-           <button onclick='loadPhoneDetails("${phone.slug}")' class='btn btn-success w-75 mt-4 ms-5'> Details</button>
+             <button onclick='loadPhoneDetails("${phone.slug}")' class='btn btn-success w-75 mt-4 ms-5'> Details</button>
           </div>
         </div>
     `;
@@ -44,12 +50,15 @@ const loadPhoneDetails = (phoneID) => {
 // phoneDetails
 const displayPhoneDetails = (phoneDetails) => {
   const phone = phoneDetails.data;
-  // const sensors = phone.mainFeatures.sensors ;
+  phone.innerHTML = "";
+
+  // const sensors = phone.mainFeatures.sensors;
+  // console.log(sensors);
   const detailseDiv = document.getElementById("phone-detailse");
   detailseDiv.innerHTML = `
     <div class=''> 
-    <img class='phone-img mb-3 mx-auto' src='${phone.image}'/>
-    <h4>${phone.brand} ${phone.name}</h4>
+    <img class='phone-img mx-auto' src='${phone.image}'/>
+    <h4 class='my-4'>${phone.brand} ${phone.name}</h4>
     <p > <span class='fw-bold me-4'>Release : </span> ${phone.releaseDate} </p>
     <p> <span class='fw-bold me-4'>Storage :  </span>  ${phone.mainFeatures.storage}</p>
     <p> <span class='fw-bold me-4'> Display Size : </span> ${phone.mainFeatures.displaySize}</p>
@@ -70,7 +79,7 @@ const displayPhoneDetails = (phoneDetails) => {
   `;
   // console.log(phone.others);
   // <p>${phone.mainFeatures.}</p>
-  // console.log(sensors);
+
   // loop
   // const sensorDisplay = () => {
   //   sensors.forEach((index) => {
