@@ -4,10 +4,16 @@ searchBtn.addEventListener("click", () => {
   const inputFiled = document.getElementById("input-field");
   const inputFiledValue = inputFiled.value;
   inputFiled.value = "";
-  const url = `https://openapi.programming-hero.com/api/phones?search=${inputFiledValue}`;
-  fetch(url)
-    .then((res) => res.json())
-    .then((data) => displaySearchResult(data));
+  const empty = document.querySelector(".empty");
+  if (inputFiledValue === "") {
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+    const url = `https://openapi.programming-hero.com/api/phones?search=${inputFiledValue}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => displaySearchResult(data));
+  }
 });
 // SearchResult
 const displaySearchResult = (phones) => {
@@ -15,18 +21,19 @@ const displaySearchResult = (phones) => {
   searchResult.textContent = "";
   const noResult = document.querySelector(".no-result");
   const phonesData = phones.data;
+
   if (phonesData.length === 0) {
-    noResult.innerHTML = `<p>no result</p>`;
-  }
-  noResult.textContent = "";
-  searchResult.textContent = "";
-  const phonesSlice = phonesData.slice(0, 20);
-  phonesSlice.forEach((phone) => {
-    // console.log(phone.slug);
-    // console.log(phone);
-    const div = document.createElement("div");
-    div.classList.add("col");
-    div.innerHTML = `
+    noResult.style.display = "block";
+  } else {
+    noResult.style.display = "none";
+    searchResult.textContent = "";
+    const phonesSlice = phonesData.slice(0, 20);
+    phonesSlice.forEach((phone) => {
+      // console.log(phone.slug);
+      // console.log(phone);
+      const div = document.createElement("div");
+      div.classList.add("col");
+      div.innerHTML = `
       <div class="card mt-4 h-100 border-0 mx-auto">
           <img src="${phone.image}" class="card-img-top" alt="..." />
           <div class="card-body">
@@ -35,8 +42,10 @@ const displaySearchResult = (phones) => {
           </div>
         </div>
     `;
-    searchResult.appendChild(div);
-  });
+      searchResult.appendChild(div);
+    });
+  }
+
   // console.log(phonesData);
 };
 const loadPhoneDetails = (phoneID) => {
